@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Itim&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anuphan:wght@100..700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+* {
+    margin: 0;
+    padding: 0;
+    outline: none;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-family: "Anuphan", serif;
+}
+.Font-Eng {
+    font-family: "Itim", serif;
+}
+@layer utilities {
+    .no-scrollbar::-webkit-scrollbar {
+        display: none; /* สำหรับ Chrome, Safari และ Opera */
+    }
+    .no-scrollbar {
+        -ms-overflow-style: none; /* สำหรับ Internet Explorer และ Edge */
+        scrollbar-width: none; /* สำหรับ Firefox */
+    }
+}
+
+/* ซ่อน spinner */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+}
+/* select2 */
+#driver1_id + .select2-container .select2-selection {
+    background-color: transparent;
+    color: red !important;
+    border: none;
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: rgb(0, 0, 0) !important; /* เปลี่ยนสีตัวอักษรเป็นสีน้ำเงิน */
+}
+#driver2_id + .select2-container .select2-selection {
+    background-color: transparent;
+    border: none;
+}
+#assistant_driver_id + .select2-container .select2-selection {
+    background-color: transparent;
+    border: none;
+}
