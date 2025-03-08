@@ -12,43 +12,54 @@ use App\Models\Branchs;
 use App\Models\Roads;
 use App\Models\Cars;
 use App\Models\Baskets;
-use App\Models\Positions;
-use App\Models\Companys;
 use App\Models\Sectors;
+use Mpdf\Mpdf;
+
 class PlannerController extends Controller
 {
-    public function Editbasket(Request $request)//แก้ไขตระกร้า
+    public function EmployeeExportpdf() //สร้าง PDF พนักงาน
+    {
+        $employees = Employees::all(); // ดึงข้อมูลทั้งหมด
+        $html = view('planner.employees.employee.PDF', compact('employees'))->render(); // โหลด Blade View
+
+        $mpdf = new Mpdf();
+        $mpdf->autoScriptToLang = true;
+        $mpdf->autoLangToFont = true;
+        $mpdf->WriteHTML($html);
+        return $mpdf->Output('product-list.pdf', 'I'); // ดาวน์โหลดไฟล์
+    }
+    public function Editbasket(Request $request) //แก้ไขตระกร้า
     {
         $basket = Baskets::findOrfail($request->id);
         $basket->basketweight = $request->basketweight;
-        $basket->save();//save
+        $basket->save(); //save
         return response()->json([
             'success' => true,
             'message' => 'Data saved successfully',
             'data' => $basket, // ส่งข้อมูล basket ใหม่กลับ
         ]);
     }
-    public function Storeallowance (Request $request)//เพิ่มข้อมูลเบี้ยเลี้ยง
+    public function Storeallowance(Request $request) //เพิ่มข้อมูลเบี้ยเลี้ยง
     {
         $validatedData = $request->validate([
             'allowance' => 'required',
         ]);
         $allowance = new Allowances;
-        $allowance->name = $request->allowance;//เก็บวันที่มาสมัครใส่ในdatabase
-        $allowance->save();//save
+        $allowance->name = $request->allowance; //เก็บวันที่มาสมัครใส่ในdatabase
+        $allowance->save(); //save
         return response()->json([
             'success' => true,
             'message' => 'Data saved successfully',
             'data' => $allowance, // ส่งข้อมูล allowance ใหม่กลับ
         ]);
     }
-    public function AllowanceDelete($id)//ลบข้อมูลเบี้ยเลี้ยง
+    public function AllowanceDelete($id) //ลบข้อมูลเบี้ยเลี้ยง
     {
         $allowance = Allowances::find($id);
         if ($allowance) {
             // ลบข้อมูล
             $allowance->delete();
-    
+
             // ส่งข้อมูลสำเร็จกลับไป
             return response()->json([
                 'success' => true,
@@ -62,7 +73,7 @@ class PlannerController extends Controller
             ]);
         }
     }
-    public function Storeproduct (Request $request)//เพิ่มข้อมูลสินค้า
+    public function Storeproduct(Request $request) //เพิ่มข้อมูลสินค้า
     {
         $validatedData = $request->validate([
             'product' => 'required',
@@ -70,14 +81,14 @@ class PlannerController extends Controller
             'customer' => 'required',
         ]);
         $product = new Products;
-        $product->product = $request->product;//เก็บสินค้าในdatabase
-        $product->weight = $request->weight;//เก็บน้ำหนักdatabase
-        $product->customer_id = $request->customer;//เก็บน้ำหนักdatabase
-        $product->save();//save
-        
+        $product->product = $request->product; //เก็บสินค้าในdatabase
+        $product->weight = $request->weight; //เก็บน้ำหนักdatabase
+        $product->customer_id = $request->customer; //เก็บน้ำหนักdatabase
+        $product->save(); //save
+
         // ดึงข้อมูลลูกค้า
         $customer = Customers::find($request->customer);
-        
+
         return response()->json([
             'success' => true,
             'message' => 'Data saved successfully',
@@ -85,13 +96,13 @@ class PlannerController extends Controller
             'customer' => $customer, // ดึงชื่อลูกค้าจากตารางลูกค้า
         ]);
     }
-    public function Editproduct (Request $request)//แก้ไขข้อมูลสินค้า
+    public function Editproduct(Request $request) //แก้ไขข้อมูลสินค้า
     {
         $product = Products::findOrfail($request->id);
-        $product->product = $request->product;//เก็บสินค้าในdatabase
-        $product->weight = $request->weight;//เก็บน้ำหนักdatabase
-        $product->customer_id = $request->customer;//เก็บน้ำหนักdatabase
-        $product->save();//save
+        $product->product = $request->product; //เก็บสินค้าในdatabase
+        $product->weight = $request->weight; //เก็บน้ำหนักdatabase
+        $product->customer_id = $request->customer; //เก็บน้ำหนักdatabase
+        $product->save(); //save
         $customer = Customers::find($request->customer);
         return response()->json([
             'success' => true,
@@ -100,13 +111,13 @@ class PlannerController extends Controller
             'customer' => $customer,
         ]);
     }
-    public function ProductDelete($id)//ลบข้อมูลสินค้า
+    public function ProductDelete($id) //ลบข้อมูลสินค้า
     {
         $product = Products::find($id);
         if ($product) {
             // ลบข้อมูล
             $product->delete();
-    
+
             // ส่งข้อมูลสำเร็จกลับไป
             return response()->json([
                 'success' => true,
@@ -120,27 +131,38 @@ class PlannerController extends Controller
             ]);
         }
     }
-    public function Storecustomer (Request $request)//เพิ่มลูกค้า
+    public function ProductExportpdf() //สร้าง PDF สินค้า
+    {
+        $products = Products::all(); // ดึงข้อมูลทั้งหมด
+        $html = view('planner.employees.products.PDF', compact('products'))->render(); // โหลด Blade View
+
+        $mpdf = new Mpdf();
+        $mpdf->autoScriptToLang = true;
+        $mpdf->autoLangToFont = true;
+        $mpdf->WriteHTML($html);
+        return $mpdf->Output('product-list.pdf', 'I'); // ดาวน์โหลดไฟล์
+    }
+    public function Storecustomer(Request $request) //เพิ่มลูกค้า
     {
         $validatedData = $request->validate([
             'customer' => 'required',
         ]);
         $customer = new Customers;
-        $customer->customer = $request->customer;//เก็บวันที่มาสมัครใส่ในdatabase
-        $customer->save();//save
+        $customer->customer = $request->customer; //เก็บวันที่มาสมัครใส่ในdatabase
+        $customer->save(); //save
         return response()->json([
             'success' => true,
             'message' => 'Data saved successfully',
             'data' => $customer, // ส่งข้อมูล customer ใหม่กลับ
         ]);
     }
-    public function CustomerDelete($id)//ลบข้อมูลลูกค้า
+    public function CustomerDelete($id) //ลบข้อมูลลูกค้า
     {
         $customer = Customers::find($id);
         if ($customer) {
             // ลบข้อมูล
             $customer->delete();
-    
+
             // ส่งข้อมูลสำเร็จกลับไป
             return response()->json([
                 'success' => true,
@@ -154,32 +176,43 @@ class PlannerController extends Controller
             ]);
         }
     }
-    public function Storesector (Request $request)
+    public function CustomerExportpdf() //สร้าง PDF ลูกค้า
+    {
+        $customers = Customers::all(); // ดึงข้อมูลทั้งหมด
+        $html = view('planner.employees.customers.PDF', compact('customers'))->render(); // โหลด Blade View
+
+        $mpdf = new Mpdf();
+        $mpdf->autoScriptToLang = true;
+        $mpdf->autoLangToFont = true;
+        $mpdf->WriteHTML($html);
+        return $mpdf->Output('product-list.pdf', 'I'); // ดาวน์โหลดไฟล์
+    }
+    public function Storesector(Request $request)//เพิ่มภาค
     {
         $validatedData = $request->validate([
             'sector' => 'required',
         ]);
-        $sector = new Sectors; 
+        $sector = new Sectors;
         $sector->name = $request->sector;
-        $sector->save();//save
+        $sector->save(); //save
         return response()->json([
             'success' => true,
             'message' => 'Data saved successfully',
             'data' => $sector, // ส่งข้อมูล Cartype ใหม่กลับ
         ]);
     }
-    public function SectorDelete ($id)
+    public function SectorDelete($id)//ลบภาค
     {
         $sector = Sectors::find($id);
-        if($sector){
+        if ($sector) {
             //ลบข้อมูล
             $sector->delete();
-             // ส่งข้อมูลสำเร็จกลับไป
-             return response()->json([
+            // ส่งข้อมูลสำเร็จกลับไป
+            return response()->json([
                 'success' => true,
                 'message' => 'ลบข้อมูลเสร็จสิ้น',
             ]);
-        }else {
+        } else {
             // ส่งข้อมูลไม่พบกลับไป
             return response()->json([
                 'success' => false,
@@ -187,7 +220,7 @@ class PlannerController extends Controller
             ]);
         }
     }
-    public function Storebranch (Request $request)//เพิ่มสาขา
+    public function Storebranch(Request $request) //เพิ่มสาขา
     {
         $validatedData = $request->validate([
             'branch' => 'required',
@@ -195,13 +228,13 @@ class PlannerController extends Controller
             'sector' => 'required',
         ]);
         $branch = new Branchs;
-        $branch->branch = $request->branch;//เก็บวันที่มาสมัครใส่ในdatabase
-        $branch->customer_id = $request->customer;//เก็บวันที่มาสมัครใส่ในdatabase
-        $branch->sector_id = $request->sector;//เก็บวันที่มาสมัครใส่ในdatabase
-        $branch->save();//save
+        $branch->branch = $request->branch; //เก็บวันที่มาสมัครใส่ในdatabase
+        $branch->customer_id = $request->customer; //เก็บวันที่มาสมัครใส่ในdatabase
+        $branch->sector_id = $request->sector; //เก็บวันที่มาสมัครใส่ในdatabase
+        $branch->save(); //save
         // ดึงข้อมูลลูกค้า
         $customer = Customers::find($request->customer);
-         // ดึงข้อมูลภาค
+        // ดึงข้อมูลภาค
         $sector = Sectors::find($request->sector);
         return response()->json([
             'success' => true,
@@ -211,18 +244,18 @@ class PlannerController extends Controller
             'sector' => $sector,
         ]);
     }
-    public function SelectforBranch($id)
+    public function SelectforBranch($id)//เลือกสาขา
     {
         $branchs = Branchs::where('sector_id', $id)->with('customers', 'sectors')->get();
         return response()->json($branchs);
     }
-    public function BranchDelete($id)//ลบสาขา
+    public function BranchDelete($id) //ลบสาขา
     {
         $branch = Branchs::find($id);
         if ($branch) {
             // ลบข้อมูล
             $branch->delete();
-    
+
             // ส่งข้อมูลสำเร็จกลับไป
             return response()->json([
                 'success' => true,
@@ -236,7 +269,18 @@ class PlannerController extends Controller
             ]);
         }
     }
-    public function Storeroad (Request $request)//เพิ่มเส้นทาง
+    public function BranchExportpdf() //สร้าง PDF สาขา
+    {
+        $branchs = Branchs::all(); // ดึงข้อมูลทั้งหมด
+        $html = view('planner.employees.branchs.PDF', compact('branchs'))->render(); // โหลด Blade View
+
+        $mpdf = new Mpdf();
+        $mpdf->autoScriptToLang = true;
+        $mpdf->autoLangToFont = true;
+        $mpdf->WriteHTML($html);
+        return $mpdf->Output('product-list.pdf', 'I'); // ดาวน์โหลดไฟล์
+    }
+    public function Storeroad(Request $request) //เพิ่มเส้นทาง
     {
         $validatedData = $request->validate([
             'road' => 'required',
@@ -245,39 +289,39 @@ class PlannerController extends Controller
             'lng' => 'required',
         ]);
         $road = new Roads;
-        $road->road = $request->road;//เก็บวันที่มาสมัครใส่ในdatabase
-        $road->time = $request->time;//เก็บวันที่มาสมัครใส่ในdatabase
-        $road->lat = $request->lat;//เก็บวันที่มาสมัครใส่ในdatabase
-        $road->lng = $request->lng;//เก็บวันที่มาสมัครใส่ในdatabase
-        $road->status = 1;//เก็บวันที่มาสมัครใส่ในdatabase
-        $road->save();//save
+        $road->road = $request->road; //เก็บวันที่มาสมัครใส่ในdatabase
+        $road->time = $request->time; //เก็บวันที่มาสมัครใส่ในdatabase
+        $road->lat = $request->lat; //เก็บวันที่มาสมัครใส่ในdatabase
+        $road->lng = $request->lng; //เก็บวันที่มาสมัครใส่ในdatabase
+        $road->status = 1; //เก็บวันที่มาสมัครใส่ในdatabase
+        $road->save(); //save
         return response()->json([
             'success' => true,
             'message' => 'Data saved successfully',
             'data' => $road, // ส่งข้อมูล road ใหม่กลับ
         ]);
     }
-    public function Editroad (Request $request)//แก้ไขเส้นทาง
+    public function Editroad(Request $request) //แก้ไขเส้นทาง
     {
         $road = Roads::findOrfail($request->id);
-        $road->road = $request->road;//เก็บdatabase
-        $road->time = $request->time;//เก็บdatabase
-        $road->lat = $request->lat;//เก็บdatabase
-        $road->lng = $request->lng;//เก็บdatabase
-        $road->save();//save
+        $road->road = $request->road; //เก็บdatabase
+        $road->time = $request->time; //เก็บdatabase
+        $road->lat = $request->lat; //เก็บdatabase
+        $road->lng = $request->lng; //เก็บdatabase
+        $road->save(); //save
         return response()->json([
             'success' => true,
             'message' => 'Data saved successfully',
             'data' => $road, // ส่งข้อมูล Cartype ใหม่กลับ
         ]);
     }
-    public function RoadDelete($id)//ลบเส้นทาง
+    public function RoadDelete($id) //ลบเส้นทาง
     {
         $road = Roads::find($id);
         if ($road) {
             // ลบข้อมูล
             $road->delete();
-    
+
             // ส่งข้อมูลสำเร็จกลับไป
             return response()->json([
                 'success' => true,
@@ -291,7 +335,18 @@ class PlannerController extends Controller
             ]);
         }
     }
-    public function RoadUpdateStatus (Request $request)//เปลี่ยนสถานะข้อมูลรถ
+    public function RoadExportpdf() //สร้าง PDF สินค้า
+    {
+        $roads = Roads::all(); // ดึงข้อมูลทั้งหมด
+        $html = view('planner.employees.roads.PDF', compact('roads'))->render(); // โหลด Blade View
+
+        $mpdf = new Mpdf();
+        $mpdf->autoScriptToLang = true;
+        $mpdf->autoLangToFont = true;
+        $mpdf->WriteHTML($html);
+        return $mpdf->Output('product-list.pdf', 'I'); // ดาวน์โหลดไฟล์
+    }
+    public function RoadUpdateStatus(Request $request) //เปลี่ยนสถานะข้อมูลรถ
     {
         $road = Roads::find($request->id);
         if ($road) {
@@ -303,27 +358,27 @@ class PlannerController extends Controller
 
         return response()->json(['success' => false, 'message' => 'ไม่พบข้อมูล']);
     }
-    public function Storecartype (Request $request)//เพิ่มข้อมูลชนิดรถ
+    public function Storecartype(Request $request) //เพิ่มข้อมูลชนิดรถ
     {
         $validatedData = $request->validate([
             'cartype' => 'required',
         ]);
         $cartype = new Cartypes;
-        $cartype->name = $request->cartype;//เก็บวันที่มาสมัครใส่ในdatabase
-        $cartype->save();//save
+        $cartype->name = $request->cartype; //เก็บวันที่มาสมัครใส่ในdatabase
+        $cartype->save(); //save
         return response()->json([
             'success' => true,
             'message' => 'Data saved successfully',
             'data' => $cartype, // ส่งข้อมูล Cartype ใหม่กลับ
         ]);
     }
-    public function CartypeDelete($id)//ลบข้อมูลชนิด
+    public function CartypeDelete($id) //ลบข้อมูลชนิด
     {
         $cartype = Cartypes::find($id);
         if ($cartype) {
             // ลบข้อมูล
             $cartype->delete();
-    
+
             // ส่งข้อมูลสำเร็จกลับไป
             return response()->json([
                 'success' => true,
@@ -337,7 +392,7 @@ class PlannerController extends Controller
             ]);
         }
     }
-    public function Storecar (Request $request)//เพิ่มรถ
+    public function Storecar(Request $request) //เพิ่มรถ
     {
         $validatedData = $request->validate([
             'license' => 'required',
@@ -346,53 +401,53 @@ class PlannerController extends Controller
             'weight' => 'required',
         ]);
         $car = new Cars;
-        $car->license = $request->license;//เก็บวันที่มาสมัครใส่ในdatabase
-        $car->number = $request->number;//เก็บวันที่มาสมัครใส่ในdatabase
-        $car->cartype_id = $request->size;//เก็บวันที่มาสมัครใส่ในdatabase
-        $car->weight = $request->weight;//เก็บวันที่มาสมัครใส่ในdatabase
+        $car->license = $request->license; //เก็บวันที่มาสมัครใส่ในdatabase
+        $car->number = $request->number; //เก็บวันที่มาสมัครใส่ในdatabase
+        $car->cartype_id = $request->size; //เก็บวันที่มาสมัครใส่ในdatabase
+        $car->weight = $request->weight; //เก็บวันที่มาสมัครใส่ในdatabase
         $car->status = 1;
-        $car->save();//save
+        $car->save(); //save
         return response()->json([
             'success' => true,
             'message' => 'Data saved successfully',
             'data' => [
-                    'id' => $car->id,
-                    'license' => $car->license,
-                    'number' => $car->number,
-                    'size' => $car->cartypes->name, // ส่งชื่อของ cartype
-                    'weight' => $car->weight,
-                    'status' => $car->status,
+                'id' => $car->id,
+                'license' => $car->license,
+                'number' => $car->number,
+                'size' => $car->cartypes->name, // ส่งชื่อของ cartype
+                'weight' => $car->weight,
+                'status' => $car->status,
             ],
         ]);
     }
-    public function Editcar (Request $request)//แก้ไขรถ
+    public function Editcar(Request $request) //แก้ไขรถ
     {
         $car = Cars::findOrfail($request->id);
-        $car->license = $request->license;//เก็บสินค้าในdatabase
-        $car->number = $request->number;//เก็บน้ำหนักdatabase
-        $car->cartype_id = $request->size;//เก็บน้ำหนักdatabase
-        $car->weight = $request->weight;//เก็บน้ำหนักdatabase
-        $car->save();//save
+        $car->license = $request->license; //เก็บสินค้าในdatabase
+        $car->number = $request->number; //เก็บน้ำหนักdatabase
+        $car->cartype_id = $request->size; //เก็บน้ำหนักdatabase
+        $car->weight = $request->weight; //เก็บน้ำหนักdatabase
+        $car->save(); //save
         return response()->json([
             'success' => true,
             'message' => 'Data saved successfully',
             'data' => [
-                    'id' => $car->id,
-                    'license' => $car->license,
-                    'number' => $car->number,
-                    'size' => $car->cartypes->name, // ส่งชื่อของ cartype
-                    'weight' => $car->weight,
+                'id' => $car->id,
+                'license' => $car->license,
+                'number' => $car->number,
+                'size' => $car->cartypes->name, // ส่งชื่อของ cartype
+                'weight' => $car->weight,
             ],
 
         ]);
     }
-    public function CarDelete($id)//ลบข้อมูลรถ
+    public function CarDelete($id) //ลบข้อมูลรถ
     {
         $car = Cars::find($id);
         if ($car) {
             // ลบข้อมูล
             $car->delete();
-    
+
             // ส่งข้อมูลสำเร็จกลับไป
             return response()->json([
                 'success' => true,
@@ -406,7 +461,18 @@ class PlannerController extends Controller
             ]);
         }
     }
-    public function CarUpdateStatus (Request $request)//เปลี่ยนสถานะข้อมูลรถ
+    public function CarExportpdf() //สร้าง PDF ของรถ
+    {
+        $cars = Cars::all(); // ดึงข้อมูลทั้งหมด
+        $html = view('planner.employees.cars.PDF', compact('cars'))->render(); // โหลด Blade View
+
+        $mpdf = new Mpdf();
+        $mpdf->autoScriptToLang = true;
+        $mpdf->autoLangToFont = true;
+        $mpdf->WriteHTML($html);
+        return $mpdf->Output('product-list.pdf', 'I'); // ดาวน์โหลดไฟล์
+    }
+    public function CarUpdateStatus(Request $request) //เปลี่ยนสถานะข้อมูลรถ
     {
         $car = Cars::find($request->id);
         if ($car) {

@@ -14,10 +14,18 @@
                 @endforeach
             </select>
         </div>
-        <button onclick="my_branch.showModal()"
-            class="bg-gray-800 text-white hover:bg-gray-700 px-4 py-2 rounded-md transition">
-            <i class="fa-solid fa-plus"></i>
-        </button>
+        <div class="">
+            <a href="/BranchExportpdf" target="_blank">
+                <button class="bg-gray-800 text-white hover:bg-gray-700 px-4 py-2 rounded-md transition">
+                    <i class="fa-solid fa-file-pdf"></i>
+                </button>
+            </a>
+            <button onclick="my_branch.showModal()"
+                class="bg-gray-800 text-white hover:bg-gray-700 px-4 py-2 rounded-md transition">
+                <i class="fa-solid fa-plus"></i>
+            </button>
+        </div>
+
     </div>
     <div class="overflow-x-auto no-scrollbar max-h-[200px]">
         <table class="w-full text-center border-separate border-spacing-y-2" id="tablebranch">

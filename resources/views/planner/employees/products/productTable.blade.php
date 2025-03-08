@@ -2,10 +2,17 @@
 <div class="p-6 bg-white rounded-xl border space-y-4 shadow-lg">
     <div class="flex justify-between items-center">
         <h3 class="text-xl font-bold uppercase tracking-wide text-gray-800">สินค้า</h3>
-        <button onclick="my_product.showModal()"
-            class="bg-gray-800 text-white hover:bg-gray-700 px-4 py-2 rounded-md transition">
-            <i class="fa-solid fa-plus"></i>
-        </button>
+        <div class="">
+            <a href="/ProductExportpdf" target="_blank">
+                <button class="bg-gray-800 text-white hover:bg-gray-700 px-4 py-2 rounded-md transition">
+                    <i class="fa-solid fa-file-pdf"></i>
+                </button>
+            </a>
+            <button onclick="my_product.showModal()"
+                class="bg-gray-800 text-white hover:bg-gray-700 px-4 py-2 rounded-md transition">
+                <i class="fa-solid fa-plus"></i>
+            </button>
+        </div>
     </div>
     <div class="overflow-x-auto max-h-[400px]">
         <table class="w-full text-center border-separate border-spacing-y-2" id="tableproduct">
@@ -28,8 +35,7 @@
                         <th class="px-4 py-1">
                             <button id="btneditproduct" onclick="my_product_edit.showModal()"
                                 data-id="{{ $product->id }}" data-product="{{ $product->product }}"
-                                data-weight="{{ $product->weight }}"
-                                data-customer="{{ $product->customers->id }}">
+                                data-weight="{{ $product->weight }}" data-customer="{{ $product->customers->id }}">
                                 <i class="fa-solid fa-pen-to-square hover:scale-125 duration-700"></i>
                             </button>
                         </th>

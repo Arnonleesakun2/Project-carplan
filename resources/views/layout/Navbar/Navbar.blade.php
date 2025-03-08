@@ -10,6 +10,7 @@
     <title>@yield('title')</title>
     @yield('script')
     @vite('resources/css/app.css')
+    
     {{--fontawesome--}}
     <link rel="stylesheet" href="{{ asset('fontawesome-free-6.5.2-web/css/all.min.css') }}">
     {{--jquery--}}

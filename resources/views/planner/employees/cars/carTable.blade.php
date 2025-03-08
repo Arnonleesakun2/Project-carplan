@@ -2,10 +2,18 @@
 <div class="p-6 bg-white rounded-xl border space-y-4 shadow-lg">
     <div class="flex justify-between items-center">
         <h3 class="text-xl font-bold uppercase tracking-wide text-gray-800">รถ</h3>
-        <button onclick="my_car.showModal()"
-            class="bg-gray-800 text-white hover:bg-gray-700 px-4 py-2 rounded-md transition">
-            <i class="fa-solid fa-plus"></i>
-        </button>
+        <div class="">
+            <a href="/CarExportpdf"  target="_blank">
+                <button class="bg-gray-800 text-white hover:bg-gray-700 px-4 py-2 rounded-md transition">
+                    <i class="fa-solid fa-file-pdf"></i>
+                </button>
+            </a>
+            <button onclick="my_car.showModal()"
+                class="bg-gray-800 text-white hover:bg-gray-700 px-4 py-2 rounded-md transition">
+                <i class="fa-solid fa-plus"></i>
+            </button>
+        </div>
+
     </div>
     <div class="overflow-x-auto max-h-[400px] ">
         <table class="w-full text-center border-separate border-spacing-y-2 table-auto" id="tablecar">

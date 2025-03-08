@@ -2,10 +2,18 @@
 <div class="p-6 bg-white rounded-xl border space-y-4 shadow-lg">
     <div class="flex justify-between items-center">
         <h3 class="text-xl font-bold uppercase tracking-wide text-gray-800">เส้นทาง</h3>
-        <button onclick="my_road.showModal()"
-            class="bg-gray-800 text-white hover:bg-gray-700 px-4 py-2 rounded-md transition">
-            <i class="fa-solid fa-plus"></i>
-        </button>
+        <div class="">
+            <a href="/RoadExportpdf" target="_blank">
+                <button class="bg-gray-800 text-white hover:bg-gray-700 px-4 py-2 rounded-md transition">
+                    <i class="fa-solid fa-file-pdf"></i>
+                </button>
+            </a>
+            <button onclick="my_road.showModal()"
+                class="bg-gray-800 text-white hover:bg-gray-700 px-4 py-2 rounded-md transition">
+                <i class="fa-solid fa-plus"></i>
+            </button>
+        </div>
+
     </div>
     <div class="overflow-x-auto max-h-[400px] ">
         <table class="w-full text-center border-separate border-spacing-y-2" id="tableroad">
@@ -26,8 +34,7 @@
                         <th class="px-4 py-1 flex justify-center items-center z-1 ">
                             <button
                                 class="road-toggle-status w-8 h-8 flex items-center justify-center rounded-full shadow-lg transition-all duration-500 ease-in-out"
-                                data-id="{{ $road->id }}" 
-                                data-status="{{ $road->status }}"
+                                data-id="{{ $road->id }}" data-status="{{ $road->status }}"
                                 style="background: {{ $road->status ? 'linear-gradient(135deg, #16A085, #1ABC9C)' : 'linear-gradient(135deg, #E74C3C, #C0392B)' }};">
                                 <i
                                     class="fa-solid {{ $road->status ? 'fa-check' : 'fa-times' }} text-white text-lg transition-all duration-500 ease-in-out"></i>

@@ -118,29 +118,34 @@ Route::group(['middleware' => 'planner'], function () { //user
         Route::get('/PlannerDashBoard', 'Dashboard');
     });
     Route::controller(PlannerController::class)->group(function () {
-        Route::get('/PlannerManagement', 'PlannerManagement'); //แสดงชื่อพนักงานขับรถ
+        Route::get('/EmployeeExportpdf','EmployeeExportpdf');//สร้างPDFพนักงาน
         Route::patch('/Editbasket', 'Editbasket'); //แก้ไขตะกร้า
         Route::post('/Storeallowance', 'Storeallowance'); //เพิ่มเบี้ยเลี้ยง
         Route::delete('/AllowanceDelete/{id}', 'AllowanceDelete'); //ลบเบี้ยเลี้ยง
         Route::post('/Storeproduct', 'Storeproduct'); //เพิ่มเสินค้า
         Route::patch('/Editproduct', 'Editproduct'); //แก้ไขสินค้า
-        Route::delete('/ProductDelete/{id}', 'ProductDelete'); //ลบชนิดสินค้า
+        Route::delete('/ProductDelete/{id}', 'ProductDelete'); //ลบสินค้า
+        Route::get('/ProductExportpdf','ProductExportpdf');//สร้างPDFสินค้า
         Route::post('/Storecustomer', 'Storecustomer'); //เพิ่มลูกค้า
         Route::delete('/CustomerDelete/{id}', 'CustomerDelete'); //ลบลูกค้า
+        Route::get('/CustomerExportpdf','CustomerExportpdf');//สร้างPDFลูกค้า
         Route::post('/Storesector', 'Storesector'); //เพิ่มภาค
         Route::delete('/SectorDelete/{id}', 'SectorDelete'); //ลบภาค
         Route::post('/Storebranch', 'Storebranch'); //เพิ่มสาขา
         Route::get('/SelectforBranch/{id}', 'SelectforBranch'); //เลือกข้อมูลที่จะแสดง
         Route::delete('/BranchDelete/{id}', 'BranchDelete'); //ลบสาขา
+        Route::get('/BranchExportpdf','BranchExportpdf');//สร้างPDFลูกค้า
         Route::post('/Storeroad', 'Storeroad'); //เพิ่มเส้นทาง
         Route::patch('/Editroad', 'Editroad'); //แก้ไขเส้นทาง
         Route::delete('/RoadDelete/{id}', 'RoadDelete'); //ลบเส้นทาง
+        Route::get('/RoadExportpdf','RoadExportpdf');//สร้างPDFเส้นทาง
         Route::post('/RoadUpdateStatus', 'RoadUpdateStatus'); //เปลี่ยนสถานะเส้นทาง
         Route::post('/Storecartype', 'Storecartype'); //เพิ่มชนิดของรถ
         Route::delete('/CartypeDelete/{id}', 'CartypeDelete'); //ลบชนิดของรถ
         Route::post('/Storecar', 'Storecar'); //เพิ่มรถ
         Route::patch('/Editcar', 'Editcar'); //แก้ไขรถ
         Route::delete('/CarDelete/{id}', 'CarDelete'); //ลบรถ
+        Route::get('/CarExportpdf','CarExportpdf');//สร้างPDFรถ
         Route::post('/CarUpdateStatus', 'CarUpdateStatus'); //เปลี่ยนสถานะรถ
     });
     Route::controller(CarPlannerController::class)->group(function () {
