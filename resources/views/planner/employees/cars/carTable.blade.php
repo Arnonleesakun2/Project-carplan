@@ -32,9 +32,9 @@
                 @foreach ($cars as $car)
                     <tr class="bg-white hover:bg-gray-50 text-gray-800 border-b">
                         <th class="px-4 py-1 rounded-l-[7px] border-l-[1px]">{{ $car->license }}</th>
-                        <th class="px-4 py-1">{{ $car->number }}</th>
-                        <th class="px-4 py-1">{{ $car->cartypes->name }}</th>
-                        <th class="px-4 py-1">{{ $car->weight }}</th>
+                        <th class="px-4 py-1">{{ $car->number ??''}}</th>
+                        <th class="px-4 py-1">{{ $car->cartypes->name ??''}}</th>
+                        <th class="px-4 py-1">{{ $car->weight ??''}}</th>
                         <th class="px-4 py-1 flex justify-center items-center z-1 ">
                             <button
                                 class="car-toggle-status w-8 h-8 flex items-center justify-center rounded-full shadow-lg transition-all duration-500 ease-in-out"

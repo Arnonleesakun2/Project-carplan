@@ -39,7 +39,7 @@
                                 <!-- แปลงวัน/เดือน/ปี -->
                                 <th>{{ $carplan->roads->road ?? '' }}</th>
                                 <th>{{ \Carbon\Carbon::parse($carplan->roads->time ?? '')->format('H:i') }}</th>
-                                <th>{{ $carplan->cars->number }}</th>
+                                <th>{{ $carplan->cars->number ??''}}</th>
                                 <th><a href="{{ url('/EditPlanner', $carplan->id) }}"><i
                                             class="fa-solid fa-pen-to-square hover:scale-110 duration-700"></i></a>
                                 </th>

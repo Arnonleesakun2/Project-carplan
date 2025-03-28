@@ -122,6 +122,7 @@ Route::group(['middleware' => 'planner'], function () { //user
         Route::patch('/Editbasket', 'Editbasket'); //แก้ไขตะกร้า
         Route::post('/Storeallowance', 'Storeallowance'); //เพิ่มเบี้ยเลี้ยง
         Route::delete('/AllowanceDelete/{id}', 'AllowanceDelete'); //ลบเบี้ยเลี้ยง
+        Route::get('/AllowanceExportpdf','AllowanceExportpdf');//สร้างPDFเบี้ยเลี้ยง
         Route::post('/Storeproduct', 'Storeproduct'); //เพิ่มเสินค้า
         Route::patch('/Editproduct', 'Editproduct'); //แก้ไขสินค้า
         Route::delete('/ProductDelete/{id}', 'ProductDelete'); //ลบสินค้า
@@ -131,6 +132,7 @@ Route::group(['middleware' => 'planner'], function () { //user
         Route::get('/CustomerExportpdf','CustomerExportpdf');//สร้างPDFลูกค้า
         Route::post('/Storesector', 'Storesector'); //เพิ่มภาค
         Route::delete('/SectorDelete/{id}', 'SectorDelete'); //ลบภาค
+        Route::get('/SectorExportpdf','SectorExportpdf');//สร้างPDFภาค
         Route::post('/Storebranch', 'Storebranch'); //เพิ่มสาขา
         Route::get('/SelectforBranch/{id}', 'SelectforBranch'); //เลือกข้อมูลที่จะแสดง
         Route::delete('/BranchDelete/{id}', 'BranchDelete'); //ลบสาขา
@@ -142,6 +144,7 @@ Route::group(['middleware' => 'planner'], function () { //user
         Route::post('/RoadUpdateStatus', 'RoadUpdateStatus'); //เปลี่ยนสถานะเส้นทาง
         Route::post('/Storecartype', 'Storecartype'); //เพิ่มชนิดของรถ
         Route::delete('/CartypeDelete/{id}', 'CartypeDelete'); //ลบชนิดของรถ
+        Route::get('/CartypeExportpdf','CartypeExportpdf');//สร้างPDFชนิดของรถ
         Route::post('/Storecar', 'Storecar'); //เพิ่มรถ
         Route::patch('/Editcar', 'Editcar'); //แก้ไขรถ
         Route::delete('/CarDelete/{id}', 'CarDelete'); //ลบรถ

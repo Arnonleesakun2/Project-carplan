@@ -55,8 +55,12 @@ $(document).ready(function () {
                         alert("เพิ่มข้อมูลเสร็จสิ้น");
                         $("#tableroad tbody").append(`
                             <tr class="bg-white hover:bg-gray-50 text-gray-800 border-b">
-                                <th class="px-4 py-3 rounded-l-[7px] border-l-[1px]">${response.data.road}</th>
-                                <th class="px-4 py-3">${response.data.time.split(".")[0]}</th>
+                                <th class="px-4 py-3 rounded-l-[7px] border-l-[1px]">${
+                                    response.data.road
+                                }</th>
+                                <th class="px-4 py-3">${
+                                    response.data.time.split(".")[0]
+                                }</th>
                                 <th class="px-4 py-1 flex justify-center items-center">
                                 <button
                                         class="road-toggle-status w-8 h-8 flex items-center justify-center rounded-full shadow-lg transition-all duration-500 ease-in-out"
@@ -203,35 +207,47 @@ $(document).ready(function () {
                     rowToRemove.remove(); // ลบแถวเก่า
                     // เพิ่มแถวใหม่ที่มีข้อมูลที่แก้ไข
                     var newRow = `
-                        <tr class="bg-transparent  hover:bg-black text-white">
-                            <th class="px-4 py-3 rounded-l-[7px] border-l-[1px]">${
-                                response.data.road
-                            }</th>
-                            <th class="px-4 py-3">${response.data.time
-                                .split(":")
-                                .slice(0, 2)
-                                .join(":")}</th>
-                            <th class="px-4 py-3">
-                                <button  
-                                    id="btneditroad" 
-                                    onclick="my_road_edit.showModal()"
-                                    data-id="${response.data.id}"
-                                    data-road="${response.data.road}"
-                                    data-time="${response.data.time}"
-                                    data-lat="${response.data.lat}"
-                                    data-lng="${response.data.lng}"
-                                >
-                                    <i class="fa-solid fa-pen-to-square"></i>
-                                </button>
-                                </th>
-                            <th class="px-4 py-3 rounded-r-[7px] border-r-[1px]">
-                                <a href="" data-id="${
-                                    response.data.id
-                                }"  id="roaddelete" >
-                                    <i class="fa-solid fa-trash"></i>
-                                </a>
-                            </th>
-                        </tr>
+                        <tr class="bg-white hover:bg-gray-50 text-gray-800 border-b">
+                        <th class="px-4 py-3 rounded-l-[7px] border-l-[1px]">${
+                            response.data.road
+                        }</th>
+                        <th class="px-4 py-3">${response.data.time
+                            .split(":")
+                            .slice(0, 2)
+                            .join(":")}</th>
+                        <th class="px-4 py-1 flex justify-center items-center z-1">
+                            <button
+                                class="road-toggle-status w-8 h-8 flex items-center justify-center rounded-full shadow-lg transition-all duration-500 ease-in-out"
+                                data-id="${response.data.id}" 
+                                data-status="${response.data.status}"
+                                style="background: ${
+                                    response.data.status
+                                        ? "linear-gradient(135deg, #16A085, #1ABC9C)"
+                                        : "linear-gradient(135deg, #E74C3C, #C0392B)"
+                                };">
+                                <i class="fa-solid ${
+                                    response.data.status ? "fa-check" : "fa-times"
+                                } text-white text-lg transition-all duration-500 ease-in-out"></i>
+                            </button>
+                        </th>
+                        <th class="px-4 py-3">
+                            <button  
+                                id="btneditroad" 
+                                onclick="my_road_edit.showModal()"
+                                data-id="${response.data.id}"
+                                data-road="${response.data.road}"
+                                data-time="${response.data.time}"
+                                data-lat="${response.data.lat}"
+                                data-lng="${response.data.lng}">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                        </th>
+                        <th class="px-4 py-3 rounded-r-[7px] border-r-[1px]">
+                            <a href="" data-id="${response.data.id}" id="roaddelete">
+                                <i class="fa-solid fa-trash"></i>
+                            </a>
+                        </th>
+                    </tr>
                     `;
                     $("#tableroad").append(newRow); // เพิ่มแถวใหม่เข้าไปในตาราง
                     // เคลียร์ฟอร์ม

@@ -114,11 +114,19 @@ $(document).ready(function () {
                     rowToRemove.remove(); // ลบแถวเก่า
                     // เพิ่มแถวใหม่ที่มีข้อมูลที่แก้ไข
                     var newRow = `
-                        <tr class="bg-transparent  hover:bg-black text-white">
+                        <tr class="bg-white hover:bg-gray-50 text-gray-800 border-b">
                             <th class="px-4 py-3 rounded-l-[7px] border-l-[1px]">${response.data.license}</th>
                             <th class="px-4 py-3">${response.data.number}</th>
                             <th class="px-4 py-3">${response.data.size}</th>
                             <th class="px-4 py-3">${response.data.weight}</th>
+                            <th class="px-4 py-1 flex justify-center items-center z-1 ">
+                                <button
+                                    class="car-toggle-status w-8 h-8 flex items-center justify-center rounded-full shadow-lg transition-all duration-500 ease-in-out"
+                                    data-id="${response.data.id}" data-status="${response.data.status}"
+                                    style="background: ${response.data.status ? 'linear-gradient(135deg, #16A085, #1ABC9C)' : 'linear-gradient(135deg, #E74C3C, #C0392B)'};">
+                                     <i class="fa-solid ${response.data.status ? 'fa-check' : 'fa-times'} text-white text-lg transition-all duration-500 ease-in-out"></i>
+                                </button>
+                            </th>
                             <th class="px-4 py-3">
                                 <button  
                                     id="btneditcar" 
@@ -127,11 +135,12 @@ $(document).ready(function () {
                                     data-license="${response.data.license}"
                                     data-number="${response.data.number}"
                                     data-size="${response.data.size}"
-                                    data-carweight="{{ $car->weight }}"
+                                    data-carweight="${response.data.weight}"
                                     >
                                     <i class="fa-solid fa-pen-to-square"></i>
                                 </button>
                             </th>
+                            
                             <th class="px-4 py-3 rounded-r-[7px] border-r-[1px]">
                                 <a href="" data-id="${response.data.id}"  id="cardelete" >
                                     <i class="fa-solid fa-trash"></i>
@@ -195,7 +204,7 @@ $(document).ready(function () {
         var carId = button.data("id");
         var currentStatus = button.data("status");
         var newStatus = currentStatus ? 0 : 1;
-    
+
         $.ajax({
             url: Statuscar,
             type: "POST",
@@ -207,7 +216,7 @@ $(document).ready(function () {
             success: function (response) {
                 if (response.success) {
                     button.data("status", newStatus);
-    
+
                     // ใช้ animation เปลี่ยนสีเป็น Gradient
                     button.css({
                         background: newStatus
@@ -216,13 +225,13 @@ $(document).ready(function () {
                         transition:
                             "background 0.5s ease-in-out, transform 0.2s ease",
                     });
-    
+
                     // Animation ตอนกด (เด้งเล็กๆ)
                     button.css("transform", "scale(0.9)");
                     setTimeout(() => {
                         button.css("transform", "scale(1)");
                     }, 200);
-    
+
                     // เปลี่ยนไอคอนแบบ Smooth
                     icon.fadeOut(200, function () {
                         $(this)
